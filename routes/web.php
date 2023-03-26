@@ -20,6 +20,11 @@ Route::get('/', function () {
     return view('welcome');
 });
 
+Route::get('/chat', [ChatController::class, 'index']);
+
+Route::get('/messages', [ChatController::class, 'fetchMessages']);
+Route::post('/messages', [ChatController::class, 'sendMessage']);
+
 Auth::routes();
 
 Route::get('/home', [App\Http\Controllers\HomeController::class, 'index'])->name('home');

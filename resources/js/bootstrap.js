@@ -31,7 +31,7 @@ window.Echo = new Echo({
     disableStats: true,
 });
 
-window.Echo.channel('DemoChannel')
-    .listen('WebsocketDemoEvent', (e)=>{
-        console.log(e);
-    });
+// window.Echo.channel('DemoChannel')
+//     .listen('WebsocketDemoEvent', (e)=>{
+//         console.log(e);
+//     });
