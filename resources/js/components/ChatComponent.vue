@@ -44,11 +44,16 @@ export default {
         return {
             messages: [],
             newMessage: '',
-            users: []
+            users: [],
+            chatSection:''
         }
     },
-    created() {
-        this.fetchMessages();
+    mounted(){
+      this.chatSection = document.querySelector('.list-unstyled');
+    },
+    async created() {
+        await this.fetchMessages();
+        this.scroll();
         Echo.join('chat')
             .here(user => {
                 this.users = user;
@@ -61,11 +66,14 @@ export default {
         })
             .listen('MessageSentEvent', (event) => {
                 this.messages.push(event.message);
+                setTimeout(()=>{
+                    this.scroll()
+                },10)
             });
     },
     methods: {
-        fetchMessages() {
-            axios.get('/messages').then(response => {
+        async fetchMessages() {
+           await axios.get('/messages').then(response => {
                 this.messages = response.data;
             })
         },
@@ -74,9 +82,18 @@ export default {
                 user: this.user,
                 message: this.newMessage
             });
+            setTimeout(()=>{
+                this.scroll()
+            },10)
             axios.post('/messages', {message: this.newMessage});
             this.newMessage = '';
-        }
+        },
+        scroll(){
+            this.chatSection.scrollTo({
+                top: this.chatSection.scrollHeight,
+                behavior: "smooth",
+            });
+        },
     }
 }
 </script>
